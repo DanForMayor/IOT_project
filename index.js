@@ -8,7 +8,7 @@
 // http.listen(3000, () => {
 //   console.log('listening on *:3000');
 // });
-
+const fs = require('fs');
 const express = require('express');
 const app = express()
 const server = require('http').createServer(app);
@@ -26,5 +26,16 @@ server.listen(3000, ()=>{
 
 io.on('connection', (socket) => {
   console.log("User connected: " + socket.id);
+
+
+  setInterval(() => {
+    fs.readFile(__dirname+'/testfile.txt', 'utf8', (err,data) =>{
+
+      if(err) socket.emit('message', err);
+      else    socket.emit('message', data);
+
+    })
+  }, 1000);
+
 });
 

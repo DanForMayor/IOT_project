@@ -13,11 +13,13 @@
     <script>
 
         const socket = io('http://localhost:3000');
-        socket.on('connection', () => {
-            console.log("Connected");
+        socket.on('message', (data) => {
+            document.getElementById('result').innerHTML = data
         });
 
     </script>
+
+<p id="result"></p>
 
 
 </body>
