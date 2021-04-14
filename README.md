@@ -8,6 +8,9 @@ First install nodejs
 
 `sudo apt install nodejs`
 
+Install yarn globally
+
+`npm install --global yarn`
 
 Clone the repo, and move into the folder
 
