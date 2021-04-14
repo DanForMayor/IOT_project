@@ -12,8 +12,12 @@
 
     <script>
 
-        const socket = io('http://localhost:3000');
+	// Set the domain that this is going to be communicating with
+        const socket = io('http://raspberrypi.local:3000');
+
+	// Wait for data to be emitted to the 'message' socket
         socket.on('message', (data) => {
+	    // TODO: This is placeholder -- the data will likely be JSON or something
             document.getElementById('result').innerHTML = data
         });
 
