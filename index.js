@@ -1,4 +1,5 @@
 const fs = require('fs');
+const child_process = require('child_process');
 const express = require('express');
 const app = express()
 const server = require('http').createServer(app);
@@ -19,23 +20,28 @@ server.listen(3000, ()=>{
 
 // Set the 'connection' socket for detecting when a client has connected
 io.on('connection', (socket) => {
+  //TODO: I eventually want this to increment a client count that will print on an LCD display
 
   // Show the client ID in console
   console.log("User connected: " + socket.id);
 
   // Start sending the client the temperature data, every second
   setInterval(() => {
-    
-    // TODO: this is a placeholder -- It's going to be reading a test file and sending it's data to the client
-    // This will be replaced with a call to a python script
-    fs.readFile(__dirname+'/testfile.txt', 'utf8', (err,data) =>{
 
-      // Send either the error or the data, depending on what happens
-      if(err) socket.emit('message', err);
-      else    socket.emit('message', data);
-
-    })
+    child_process.exec('python3 /home/pi/gyro_temp.py', (err, stdout, stderr) => {
+      if (err) {
+        // node couldn't execute the command
+        return;
+      }
+      socket.emit('message',JSON.parse(stdout));
+    });
   }, 1000);
+  
+  // Check for client disconnection
+  socket.on("disconnect", (reason) => {
+    //TODO: I eventually want this to decriment a client count that will print on an LCD display
+    console.log(reason)
+  });
 
 });
 
