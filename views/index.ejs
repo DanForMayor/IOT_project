@@ -123,6 +123,7 @@
 
     // Wait for data to be emitted to the 'message' socket
     socket.on('message', (data) => {
+        console.log(JSON.stringify(data))
         
         // Display each thing in it's respective place
         document.getElementById('temperature').value = `${data.tmp}`
